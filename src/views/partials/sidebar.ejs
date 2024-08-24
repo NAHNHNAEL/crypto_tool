@@ -1,0 +1,57 @@
+<aside data-page="side-bar" class=" w-64 h-screen fixed">
+    <div class="h-full bg-gray-50 dark:bg-gray-800 px-3 py-4">
+        <ul class="nav justify-content-center text text-neutral-50">
+            <li class="nav-item  hover:text-white flex  hover:bg-slate-500  rounded-md">
+                <a href="#" class="flex p-3 items-center">
+                    <div class=" w-5">
+                        <img src="/images/icons8-home-50.png" alt="">
+                    </div>
+                    <span class="nav-link active mx-2 items-center h-full font-bold">
+                        Home
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  hover:text-white flex  hover:bg-slate-500  rounded-md">
+                <a href="#" class="flex p-3 items-center">
+                    <div class=" w-5">
+                        <img src="/images/dashboard.png" alt="">
+                    </div>
+                    <span class="nav-link active mx-2 items-center h-full font-bold">
+                        Dash board
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  hover:text-white flex  hover:bg-slate-500  rounded-md">
+                <a href="#" class="flex p-3 items-center">
+                    <div class=" w-5">
+                        <img class="" src="/images/line-chart.png" alt="">
+                    </div>
+                    <span class="nav-link active mx-2 items-center h-full font-bold">
+                        Portfolio
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item hover:text-white flex hover:bg-slate-500 rounded-md">
+                <a href="#" id="logoutButton" class="flex p-3 items-center">
+                    <div class="w-5">
+                        <img class="" src="/images/logout.png" alt="">
+                    </div>
+                    <span class="nav-link active mx-2 items-center h-full font-bold">
+                        Log out
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Popup Confirm -->
+    <div id="confirmPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-5 rounded-lg shadow-lg">
+            <p class="mb-4">Are you sure you want to log out?</p>
+            <div class="flex justify-end">
+                <button id="confirmYes" class="bg-red-500 text-white px-4 py-2 mr-2 rounded-md">Yes</button>
+                <button id="confirmNo" class="bg-gray-500 text-white px-4 py-2 rounded-md">No</button>
+            </div>
+        </div>
+    </div>
+</aside>

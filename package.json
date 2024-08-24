@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --exec \"node_modules/.bin/browser-sync start --config bs-config.js\" --watch \"src/**/*.{js,html,css}\""
+    "start": "node index.js",
+    "dev": "concurrently \"nodemon index.js\" \"browser-sync start --proxy localhost:3000 --files 'views/**/*.ejs, public/**/*.*' --port 4000 --open false\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "esm": "^3.2.25",
     "express": "^4.19.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
     "browser-sync": "^3.0.2",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.4"
   }
 }
