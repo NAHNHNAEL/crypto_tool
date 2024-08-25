@@ -1,0 +1,45 @@
+<% layout('admin/home') %>
+
+<div class="p-4 sm:ml-64">
+    <div class="mt-8">
+        <h1 class="text-2xl font-bold mb-4">Add New User</h1>
+        <form action="/admin/add-new-user" method="POST">
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+                <input type="text" id="email" name="email" class="border border-gray-400 rounded px-4 py-2 w-full" required>
+            </div>
+            <div class="mb-4">
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 font-bold mb-2">Password</label>
+                    <div class="flex items-center border border-gray-400 rounded px-4 py-2 w-full">
+                        <input type="password" id="password" name="password" value="Abc12345" class="w-full" required>
+                        <span id="password-toggle" onclick="togglePasswordVisibility()">Show</span>
+                    </div>
+                </div>
+                <script>
+                    function togglePasswordVisibility() {
+                        var passwordInput = document.getElementById("password");
+                        var passwordToggle = document.getElementById("password-toggle");
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            passwordToggle.textContent = "Hide";
+                        } else {
+                            passwordInput.type = "password";
+                            passwordToggle.textContent = "Show";
+                        }
+                    }
+                </script>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</button>
+        </form>
+    </div>
+    <div id="error-message" class="text-red-500">
+        <% if (typeof error !== 'undefined' && error) { %>
+            <script>
+                alert("Error: <%= error %>");
+                document.getElementById("email").value = "";
+                document.getElementById("password").value = "";
+            </script>
+        <% } %>
+    </div>
+</div>

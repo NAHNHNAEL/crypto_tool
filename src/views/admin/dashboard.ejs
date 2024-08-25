@@ -1,3 +1,39 @@
 <% layout('admin/home') %>
-<h1><%= title %></h1>
-<p>Welcome to the homepage!</p>
+<div class="p-4 sm:ml-64">
+    <% if (errorMessage === '') { %>
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Number</th>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (users.length > 0) { %>
+                    <% users.forEach(function(user, index) { %>
+                        <tr>
+                            <td class="border px-4 py-2"><%= index + 1 %></td>
+                            <td class="border px-4 py-2"><%= user.email %></td>
+                            <td class="border px-4 py-2">
+                                <form action="/admin/delete-user" method="POST">
+                                    <input type="hidden" name="userId" value="<%= user.id %>">
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="3" class="border px-4 py-2">No users found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <script>
+            alert('<%= errorMessage %>');
+            window.location.href = '/admin/dashboard';
+        </script>
+    <% } %>
+</div>
