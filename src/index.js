@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import session from 'express-session';
 
 const app = express();
 const port =3000;
@@ -38,6 +39,14 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
+// Setting session middleware
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }}
+));
 
 
 app.use('/', mainRouter);
