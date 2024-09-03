@@ -2,19 +2,32 @@ import mongoose from 'mongoose';
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
+  username: {
+      type: String,
+      required: true
   },
-  password:{
-    type: String,
-    default: 'Abc12345',
+  password: {
+      type: String,
+      required: true
+  },
+  email: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  role: {
+      type: String,
+      enum: ['admin', 'collaborator', 'user'], // Các vai trò có thể có
+      default: 'user'
+  },
+  isVerified: {
+      type: Boolean,
+      default: false
   },
   createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+      type: Date,
+      default: Date.now
+  }
 });
 
 // Middleware mã hóa mật khẩu trước khi lưu

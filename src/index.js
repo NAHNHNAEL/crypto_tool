@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import session from 'express-session';
+import bcrypt from 'bcryptjs';
+import User from './models/user.js';
+
 
 const app = express();
 const port =3000;
@@ -48,6 +51,35 @@ app.use(session({
   cookie: { secure: false }}
 ));
 
+
+// Kiểm tra và tạo tài khoản admin mặc định nếu chưa tồn tại
+async function createDefaultAdmin() {
+  const adminEmail = 'leanhnhan96@gmail.com';
+  const adminPassword = '12345';
+
+  try {
+      const existingAdmin = await User.findOne({ email: adminEmail });
+      if (!existingAdmin) {
+          const adminUser = new User({
+              username: 'admin',
+              email: adminEmail,
+              password: adminPassword,
+              role: 'admin'
+          });
+          await adminUser.save();
+           // Kiểm tra giá trị băm sau khi lưu
+          const savedUser = await User.findOne({ email: adminEmail });
+          console.log('Hashed Password after saving:', savedUser.password);
+          console.log('Default admin account created');
+      } else {
+          console.log('Admin account already exists');
+      }
+  } catch (error) {
+      console.error('Error creating default admin account:', error);
+  }
+}
+
+createDefaultAdmin();
 
 app.use('/', mainRouter);
  
