@@ -1,6 +1,11 @@
 import User from '../models/user.js';
 import BaseController from './BaseController.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import sendVerificationEmail from '../services/mailer.js';
+
+dotenv.config();
 
 /**
  * Represents a user controller.
@@ -142,7 +147,7 @@ class AdminController extends BaseController {
         // Setting title
         this.setTitle('Add New User');
         // Get user data from form
-        const { email, password } = req.body;
+        const { email, role, password } = req.body;
 
         // Register user
         try {
@@ -154,9 +159,22 @@ class AdminController extends BaseController {
                 this.setErrorMessage(errorMessage);
                 this.renderView(res, 'admin/add_new_user');
             }
+           
+            // Create token for email verification
+            const token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+            // Create email transporter
+            await sendVerificationEmail(email, token);
+
             // Register user using model
-            const user = new User({ email, password });
+            const user = new User({
+                username: email,
+                email: email,
+                password: password,
+                role: role,
+                verificationToken: token
+            });
             await user.save();
+
             // Redirect to dashboard
             res.redirect('/admin/dashboard');
         } catch (error) {

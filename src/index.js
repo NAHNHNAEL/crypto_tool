@@ -7,11 +7,15 @@ import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import session from 'express-session';
-import bcrypt from 'bcryptjs';
 import User from './models/user.js';
+import dotenv from 'dotenv';
 
+// Load environment variables from .env file
+dotenv.config();
 
+// Create an Express app
 const app = express();
+// Set the port
 const port =3000;
 
 // Body parser middleware to handle post requests
@@ -64,12 +68,12 @@ async function createDefaultAdmin() {
               username: 'admin',
               email: adminEmail,
               password: adminPassword,
-              role: 'admin'
+              role: 'admin',
+              isVerified: true
           });
           await adminUser.save();
            // Kiểm tra giá trị băm sau khi lưu
           const savedUser = await User.findOne({ email: adminEmail });
-          console.log('Hashed Password after saving:', savedUser.password);
           console.log('Default admin account created');
       } else {
           console.log('Admin account already exists');
