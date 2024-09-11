@@ -10,6 +10,10 @@ const userRouter = express.Router();
 userRouter.get('/login', UserController.getLoginPage);
 // Post login data
 userRouter.post('/login', UserController.doLogin);
+// Verify user email before login
+userRouter.get('/verify-email', UserController.verifyEmail);
+// Resend verification email
+userRouter.post('/resend-verification', UserController.resendVerificationEmail);
 // Get dashboard page
 userRouter.get('/dashboard',isAuthenticatedUser, UserController.getDashboardPage);
 // Post logout data

@@ -55,15 +55,10 @@ class AdminController extends BaseController {
                 this.renderView(res, 'admin/login');
                 return;
             }
-            console.log(user);
-            console.log('Stored hashed password:', user.password);
-            console.log('password:', password);
             // Check if password is correct
             // Encrypt password and compare with stored password
             const isPasswordCorrect = await bcrypt.compare(password, user.password);
-            console.log('isPasswordCorrect:', isPasswordCorrect);
             if (!isPasswordCorrect) {
-                console.log(0);
                 // Redirect to login page with error message
                 const errorMessage = 'Invalid email or password';
                 this.setErrorMessage(errorMessage);
@@ -72,11 +67,9 @@ class AdminController extends BaseController {
             }
             // Set session
             req.session.admin = user;
-            console.log(1);
             // Redirect to dashboard
             res.redirect('/admin/dashboard');
         } catch (error) {
-            console.log(error);
             // Redirect to login page with error message
             const errorMessage = 'Error logging in';
             this.setErrorMessage(errorMessage);
@@ -178,7 +171,6 @@ class AdminController extends BaseController {
             // Redirect to dashboard
             res.redirect('/admin/dashboard');
         } catch (error) {
-            console.log(error);
             // Redirect to add new user page with error message
             const errorMessage = 'Error registering user';
             this.setErrorMessage(errorMessage);
@@ -206,7 +198,6 @@ class AdminController extends BaseController {
             // Redirect to dashboard
             this.getDashboardPage(req, res, next);
         } catch (error) {
-            console.log(error);
             const errorMessage = 'Error deleting user';
             this.setErrorMessage(errorMessage);
             // Redirect to dashboard with error message
