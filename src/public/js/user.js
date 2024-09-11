@@ -28,7 +28,6 @@ $(document).ready(function () {
         // Check if button cancel logout clicked
         if (btnCancelLogout) {
             btnCancelLogout.addEventListener("click", (e) => {
-                console.log("Cancel button clicked");
                 // Add class hide to popup logout
                 popupLogout.classList.add("hidden");
             });
@@ -37,7 +36,6 @@ $(document).ready(function () {
         // Check if button confirm logout clicked
         if (btnYesConfirmLogout) {
             btnYesConfirmLogout.addEventListener("click", (e) => {
-                console.log("Confirm button clicked");
                 // Logout user using fetch API
                 fetch("/user/logout", {
                     method: "POST",
@@ -45,7 +43,12 @@ $(document).ready(function () {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({}),
-                })
+                }).then((res) => {
+                    // Redirect to login page
+                    window.location.href = "/user/login";
+                }).catch((error) => {
+                    console.error("Error logging out", error);
+                });
             });
         }
     }
