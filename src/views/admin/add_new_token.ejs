@@ -1,0 +1,66 @@
+<% layout('admin/main') %>
+
+<div class="p-4 sm:ml-64">
+    <h1 class="text-2xl font-bold mb-6 text-center">Add New Token</h1>
+    <form action="/admin/add-new-token" method="POST">
+      <div class="mb-4">
+        <label for="tokenName" class="block text-gray-700">Token Name:</label>
+        <input type="text" id="tokenName" name="tokenName" class="mt-1 p-2 w-full border rounded uppercase" required>
+      </div>
+      <div class="mb-4">
+        <label for="key1" class="block text-gray-700">Key 1:</label>
+        <input type="number" id="key1" name="key1" class="mt-1 p-2 w-full border rounded uppercase" step="any" required>
+      </div>
+      <div class="mb-4">
+        <label for="key2" class="block text-gray-700">Key 2:</label>
+        <input type="number" id="key2" name="key2" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="key3" class="block text-gray-700">Key 3:</label>
+        <input type="number" id="key3" name="key3" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="key4" class="block text-gray-700">Key 4:</label>
+        <input type="number" id="key4" name="key4" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="key5" class="block text-gray-700">Key 5:</label>
+        <input type="number" id="key5" name="key5" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target1" class="block text-gray-700">Target 1:</label>
+        <input type="number" id="target1" name="target1" class="mt-1 p-2 w-full border rounded uppercase" step="any" required>
+      </div>
+      <div class="mb-4">
+        <label for="target2" class="block text-gray-700">Target 2:</label>
+        <input type="number" id="target2" name="target2" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target3" class="block text-gray-700">Target 3:</label>
+        <input type="number" id="target3" name="target3" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target4" class="block text-gray-700">Target 4:</label>
+        <input type="number" id="target4" name="target4" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target5" class="block text-gray-700">Target 5:</label>
+        <input type="number" id="target5" name="target5" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target6" class="block text-gray-700">Target 6:</label>
+        <input type="number" id="target6" name="target6" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="target7" class="block text-gray-700">Target 7:</label>
+        <input type="number" id="target7" name="target7" class="mt-1 p-2 w-full border rounded uppercase" step="any">
+      </div>
+      <div class="mb-4">
+        <label for="exchange" class="block text-gray-700">Exchange:</label>
+        <input type="text" id="exchange" name="exchange" class="mt-1 p-2 w-full border rounded uppercase" required>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Token</button>
+      </div>
+    </form>
+</div>

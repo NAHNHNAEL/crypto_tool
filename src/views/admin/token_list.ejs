@@ -1,0 +1,90 @@
+<% layout('admin/main') %>
+
+    <div data-page="admin-token-list" class="p-4 sm:ml-64">
+        <h1 class="text-2xl font-bold mb-6 text-center">Token List</h1>
+        <div class="flex justify-center">
+            <table class="table-auto">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Token Name</th>
+                        <th class="px-4 py-2">Price real time</th>
+                        <th class="px-4 py-2">Key 1</th>
+                        <th class="px-4 py-2">Key 2</th>
+                        <th class="px-4 py-2">Key 3</th>
+                        <th class="px-4 py-2">Key 4</th>
+                        <th class="px-4 py-2">Key 5</th>
+                        <th class="px-4 py-2">Target 1</th>
+                        <th class="px-4 py-2">Target 2</th>
+                        <th class="px-4 py-2">Target 3</th>
+                        <th class="px-4 py-2">Target 4</th>
+                        <th class="px-4 py-2">Target 5</th>
+                        <th class="px-4 py-2">Target 6</th>
+                        <th class="px-4 py-2">Target 7</th>
+                        <th class="px-4 py-2">Exchange</th>
+                        <th class="px-4 py-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tokens.forEach(token=> { %>
+                        <tr>
+                            <td class="border px-4 py-2">
+                                <%= token.tokenName %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key1 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key1 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key2 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key3 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key4 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.key5 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target1 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target2 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target3 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target4 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target5 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target6 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.target7 %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%= token.exchange %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <a href="/admin/edit-token/<%= token.id %>" class="text-blue-500">Edit</a>
+                                <form action="/admin/delete-token" method="POST" style="display: inline">
+                                    <input type="hidden" name="tokenId" value="<%= token.id %>" />
+                                    <button type="submit" class="text-red-500"
+                                        onclick="return confirm('Are you sure you want to delete this token?');">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
