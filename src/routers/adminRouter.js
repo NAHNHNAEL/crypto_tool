@@ -22,6 +22,19 @@ adminRouter.get('/add-new-user',isAuthenticatedAdmin, AdminController.getAddNewU
 adminRouter.post('/add-new-user',isAuthenticatedAdmin, AdminController.registerNewUser);
 // Delete user
 adminRouter.post('/delete-user',isAuthenticatedAdmin, AdminController.deleteUser);
+// Get add new token page
+adminRouter.get('/add-new-token',isAuthenticatedAdmin, AdminController.getAddNewTokenPage);
+// Register new token
+adminRouter.post('/add-new-token',isAuthenticatedAdmin, AdminController.registerNewToken);
+// Get token list page
+adminRouter.get('/token-list',isAuthenticatedAdmin, AdminController.getTokenListPage);
+// Delete token
+adminRouter.post('/delete-token',isAuthenticatedAdmin, AdminController.deleteToken);
+// Get edit token page
+adminRouter.get('/edit-token/:id',isAuthenticatedAdmin, AdminController.getEditTokenPage);
+// Update token
+adminRouter.post('/edit-token',isAuthenticatedAdmin, AdminController.updateToken);
+
 
 
 export default adminRouter;

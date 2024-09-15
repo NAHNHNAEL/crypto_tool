@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import sendVerificationEmail from '../services/mailer.js';
 import dotenv from 'dotenv';
+import TokenList from '../models/token-list.js';
 
 dotenv.config();
 /**
@@ -223,6 +224,32 @@ class UserController extends BaseController {
             console.error('Error resending verification email:', error);
             res.status(500).json({ message: 'Server error' });
         }
+    }
+
+    /**
+     * Get token list page
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * @async
+     * 
+     * */
+    getTokenListPage = async(req, res, next) => {
+        this.setTitle('Token List');
+        this.setErrorMessage('');
+        this.setSuccessMessage('');
+
+        // Get all tokens
+        const tokens = await TokenList.find();
+        // Check if tokens exist
+        if (!tokens) {
+            // Redirect to add new token page with error message
+            tokens = [];
+        }
+
+        // Render token list page
+        this.renderView(res, 'users/token_list', { tokens: tokens });
     }
 
 }

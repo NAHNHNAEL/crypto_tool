@@ -18,7 +18,8 @@ userRouter.post('/resend-verification', UserController.resendVerificationEmail);
 userRouter.get('/dashboard',isAuthenticatedUser, UserController.getDashboardPage);
 // Post logout data
 userRouter.post('/logout',isAuthenticatedUser, UserController.doLogout);
-
+// Get token list page
+userRouter.get('/token-list',isAuthenticatedUser, UserController.getTokenListPage);
 
 // Define your routes here
 
