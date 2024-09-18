@@ -41,10 +41,12 @@ app.set('view engine', 'ejs');
 // Setting morgan to log HTTP requests
 app.use(morgan('dev'));
 
-// Setting using mongoose to connect to MongoDB
+// Setting using mongoose to connect to MongoDB Local
+// mongoose.connect('mongodb://localhost:27017/trade_crypto', {
+// });
 
-mongoose.connect('mongodb://localhost:27017/trade_crypto', {
-});
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGODB_ATLAS_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
