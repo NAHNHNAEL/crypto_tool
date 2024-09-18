@@ -34,6 +34,12 @@ adminRouter.post('/delete-token',isAuthenticatedAdmin, AdminController.deleteTok
 adminRouter.get('/edit-token/:id',isAuthenticatedAdmin, AdminController.getEditTokenPage);
 // Update token
 adminRouter.post('/edit-token',isAuthenticatedAdmin, AdminController.updateToken);
+// Get token price page
+adminRouter.get('/token-price',isAuthenticatedAdmin, AdminController.getTokenPricePage);
+// Get exchange list page
+adminRouter.get('/exchange-list',isAuthenticatedAdmin, AdminController.getExchangeListPage);
+// Add new exchange
+adminRouter.post('/add-new-exchange',isAuthenticatedAdmin, AdminController.addNewExchange);
 
 
 

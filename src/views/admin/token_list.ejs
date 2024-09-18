@@ -30,8 +30,7 @@
                             <td class="border px-4 py-2">
                                 <%= token.tokenName %>
                             </td>
-                            <td class="border px-4 py-2">
-                                <%= token.key1 %>
+                            <td class="border px-4 py-2" data-token="<%= token.tokenName %>">
                             </td>
                             <td class="border px-4 py-2">
                                 <%= token.key1 %>
@@ -69,7 +68,7 @@
                             <td class="border px-4 py-2">
                                 <%= token.target7 %>
                             </td>
-                            <td class="border px-4 py-2">
+                            <td class="border px-4 py-2 uppercase">
                                 <%= token.exchange %>
                             </td>
                             <td class="border px-4 py-2">
@@ -88,3 +87,32 @@
             </table>
         </div>
     </div>
+
+    <script>
+        const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
+        console.log(tokens);
+        const socket = io('ws://localhost:3000', {transports: ['websocket']});
+        socket.on('connect', () => {
+          console.log('Socket.IO connection opened');
+          socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
+        });
+      
+        socket.on('tokenPrices', (prices) => {
+            // Cập nhật giá token vào các ô tương ứng
+            console.log(prices);
+            for (const [token, price] of Object.entries(prices)) {
+            const priceCell = document.querySelector(`td[data-token="${token.split('/')[0]}"]`);
+            if (priceCell) {
+                priceCell.innerText = `$${price}`;
+            }
+            }
+        });
+      
+        socket.on('disconnect', () => {
+          console.log('Socket.IO connection closed');
+        });
+      
+        socket.on('connect_error', (error) => {
+          console.error('Socket.IO error:', error);
+        });
+      </script>

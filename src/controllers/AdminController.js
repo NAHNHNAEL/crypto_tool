@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import sendVerificationEmail from '../services/mailer.js';
 import TokenList from '../models/token-list.js';
+import ccxt from 'ccxt';
+import Exchange from '../models/exchange.js';
 
 dotenv.config();
 
@@ -219,8 +221,19 @@ class AdminController extends BaseController {
         this.setTitle('Add New Token');
         this.setErrorMessage('');
         this.setSuccessMessage('');
-        // Render add new token page
-        this.renderView(res, 'admin/add_new_token');
+        // Get all exchanges
+        const exchanges = await Exchange.find();
+        // Check if exchanges exist
+        if (!exchanges) {
+            // Redirect to add new token page with error message
+            const errorMessage = 'Error fetching exchanges';
+            this.setErrorMessage(errorMessage);
+            this.renderView(res, 'admin/add_new_token');
+            return;
+        }
+
+        // Render add new token page with exchanges
+        this.renderView(res, 'admin/add_new_token', { exchanges: exchanges });
     }
 
     /**
@@ -254,7 +267,7 @@ class AdminController extends BaseController {
                 target5: token.target5,
                 target6: token.target6,
                 target7: token.target7,
-                exchange: token.exchange.toUpperCase(),
+                exchange: token.exchange,
             });
             await newToken.save();
             // Redirect to add new token page with success message
@@ -346,8 +359,18 @@ class AdminController extends BaseController {
             this.getTokenListPage(req, res, next);
             return;
         }
-        // Render edit token page with token
-        this.renderView(res, 'admin/edit_token', { token: token });
+        // Get exchanges
+        const exchanges = await Exchange.find();
+        // Check if exchanges exist
+        if (!exchanges) {
+            // Redirect to edit token page with error message
+            const errorMessage = 'Error fetching exchanges';
+            this.setErrorMessage(errorMessage);
+            this.renderView(res, 'admin/edit_token');
+            return;
+        }
+        // Render edit token page with token and exchanges
+        this.renderView(res, 'admin/edit_token', { token: token, exchanges: exchanges });
     }
 
     /**
@@ -382,7 +405,7 @@ class AdminController extends BaseController {
                 target5: token.target5,
                 target6: token.target6,
                 target7: token.target7,
-                exchange: token.exchange.toUpperCase(),
+                exchange: token.exchange,
             });
             // Redirect to token list with success message
             const successMessage = 'Token updated successfully';
@@ -393,6 +416,95 @@ class AdminController extends BaseController {
             const errorMessage = 'Error updating token';
             this.setErrorMessage(errorMessage);
             this.renderView(res, 'admin/edit_token');
+        }
+    }
+
+    /**
+     * Get token price page
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * @async
+     * 
+     * */
+    getTokenPricePage = async (req, res, next) => {
+       
+        try {
+            this.setTitle('Token Price');
+            this.setErrorMessage('');
+            this.setSuccessMessage('');
+
+            const tokens = await TokenList.find(); // Lấy danh sách tất cả các token từ database
+            this.renderView(res, 'admin/token_price', { tokens: tokens });
+          } catch (error) {
+            console.error('Error fetching token list:', error);
+            res.status(500).send('Internal Server Error');
+          }
+    }
+
+    /**
+     * Get exchange list page
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * @async
+     * 
+     * */
+    getExchangeListPage = async (req, res, next) => {
+        this.setTitle('Exchange List');
+        this.setErrorMessage('');
+        this.setSuccessMessage('');
+        // Get all exchanges
+        const exchanges = await Exchange.find();
+        // Render exchange list page with exchanges
+        this.renderView(res, 'admin/exchange_list', { exchanges: exchanges });
+    }
+
+    /**
+     * Get add new exchange page
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * 
+     * */
+    addNewExchange = async (req, res, next) => {
+
+        try {
+            this.setTitle('Add New Exchange');
+            this.setErrorMessage('');
+            this.setSuccessMessage('');
+            const exchangeInfo = req.body;
+            console.log(exchangeInfo);
+
+            // Check exchange is exist by exchangeID
+            const exchange = await Exchange.findOne({ exchangeID: exchangeInfo.id });
+            if (exchange) {
+                // Redirect to add new exchange page with error message
+                const errorMessage = 'Exchange already exists';
+                this.setErrorMessage(errorMessage);
+                this.renderView(res, 'admin/exchange_list');
+                return;
+            }
+            // Register exchange using model
+            const newExchange = new Exchange({
+                exchangeID: exchangeInfo.id,
+                exchangeName: exchangeInfo.name,
+                exchangeType: exchangeInfo.type,
+                exchangeUrl: exchangeInfo.logo,
+                createdAt: new Date(),
+            });
+            await newExchange.save();
+            // Redirect to exchange list page with success message
+            const successMessage = 'Exchange registered successfully';
+            this.setSuccessMessage(successMessage);
+            this.getExchangeListPage(req, res, next);
+        } catch (error) {
+            console.error('Error fetching exchange list:', error);
+            res.status(500).send('Internal Server Error');
+            
         }
     }
 }

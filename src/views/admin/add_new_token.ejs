@@ -57,7 +57,11 @@
       </div>
       <div class="mb-4">
         <label for="exchange" class="block text-gray-700">Exchange:</label>
-        <input type="text" id="exchange" name="exchange" class="mt-1 p-2 w-full border rounded uppercase" required>
+        <select id="exchange" name="exchange" class="mt-1 p-2 w-full border rounded" required>
+          <% exchanges.forEach(function(exchange) { %>
+            <option value="<%= exchange.exchangeID %>"><%= exchange.exchangeID %></option>
+          <% }); %>
+        </select>
       </div>
       <div class="text-center">
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Token</button>

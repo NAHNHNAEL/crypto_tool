@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "dev": "concurrently \"nodemon index.js\" \"browser-sync start --proxy localhost:3000 --files 'views/**/*.ejs, public/**/*.*' --port 4000 --open false\""
   },
   "keywords": [],
@@ -14,6 +14,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "ccxt": "^4.4.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
@@ -23,7 +24,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.4",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.14"
+    "nodemailer": "^6.9.14",
+    "socket.io": "^4.7.5",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "browser-sync": "^3.0.2",
