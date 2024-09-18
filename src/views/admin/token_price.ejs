@@ -11,7 +11,7 @@
 <script>
   const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
   console.log(tokens);
-  const socket = io('ws://localhost:3000', {transports: ['websocket']});
+  const socket = io(process.env.SOCKET_SERVER_URL, {transports: ['websocket']});
   socket.on('connect', () => {
     console.log('Socket.IO connection opened');
     socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
