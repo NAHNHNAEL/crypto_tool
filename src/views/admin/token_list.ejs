@@ -89,9 +89,9 @@
     </div>
 
     <script>
+        const socketServerUrl = '<%= process.env.SITE_URL %>';
         const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
-        console.log(tokens);
-        const socket = io(process.env.SOCKET_SERVER_URL, {transports: ['websocket']});
+        const socket = io(socketServerUrl, {transports: ['websocket']});
         socket.on('connect', () => {
           console.log('Socket.IO connection opened');
           socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
