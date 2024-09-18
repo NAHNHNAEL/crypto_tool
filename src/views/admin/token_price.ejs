@@ -1,0 +1,40 @@
+<% layout('admin/main') %>
+
+<div class="p-4 sm:ml-64">
+    <h1 class="text-2xl font-bold mb-6 text-center">Token Price</h1>
+    <div class="flex justify-center">
+        <!-- Thêm phần tử để hiển thị giá token -->
+        <div id="tokenPrice" class="p-4 text-center text-xl font-bold"></div>
+    </div>
+</div>
+
+<script>
+  const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
+  console.log(tokens);
+  const socket = io('ws://localhost:3000', {transports: ['websocket']});
+  socket.on('connect', () => {
+    console.log('Socket.IO connection opened');
+    socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
+  });
+
+  socket.on('tokenPrices', (prices) => {
+    console.log('Token prices:', prices);
+    // Hiển thị giá token lên giao diện
+    const tokenPricesDiv = document.getElementById('tokenPrice');
+    tokenPricesDiv.innerHTML = ''; // Clear previous prices
+
+    for (const [token, price] of Object.entries(prices)) {
+      const priceElement = document.createElement('div');
+      priceElement.innerText = `${token}: $${price}`;
+      tokenPricesDiv.appendChild(priceElement);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Socket.IO connection closed');
+  });
+
+  socket.on('connect_error', (error) => {
+    console.error('Socket.IO error:', error);
+  });
+</script>

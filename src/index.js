@@ -9,14 +9,19 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import User from './models/user.js';
 import dotenv from 'dotenv';
+import http from 'http';
+import { initializeWebSocket } from './controllers/SocketIOController.js';
 
 // Load environment variables from .env file
 dotenv.config();
 
 // Create an Express app
 const app = express();
-// Set the port
-const port =3000;
+
+const server = http.createServer(app); 
+
+// Initialize WebSocket server
+initializeWebSocket(server);
 
 // Body parser middleware to handle post requests
 app.use(bodyParser.json());
@@ -86,5 +91,7 @@ async function createDefaultAdmin() {
 createDefaultAdmin();
 
 app.use('/', mainRouter);
- 
-app.listen(port, () => { console.log(`Server is running on port ${port}`) });
+
+// Set the port
+const port =3000;
+server.listen(port, () => { console.log(`Server is running on port ${port}`) });

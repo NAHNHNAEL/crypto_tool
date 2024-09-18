@@ -1,0 +1,75 @@
+<% layout('admin/main') %>
+
+<div class="p-4 sm:ml-64">
+    <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100 border-b border-gray-300">
+                <th class="px-6 py-2 text-left text-sm font-semibold text-gray-700">STT</th>
+                <th class="px-6 py-2 text-left text-sm font-semibold text-gray-700">Logo</th>
+                <th class="px-6 py-2 text-left text-sm font-semibold text-gray-700">Exchange ID</th>
+                <th class="px-6 py-2 text-left text-sm font-semibold text-gray-700">Exchange Name</th>
+                <th class="px-6 py-2 text-left text-sm font-semibold text-gray-700">Exchange Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (exchanges && exchanges.length > 0) { %>
+                <% exchanges.forEach((exchange, index) => { %>
+                    <tr class="border-b border-gray-300">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= index + 1 %></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <% if (exchange.logo) { %>
+                                <img src="<%= exchange.logo %>" alt="Logo" class="h-8 w-8 rounded-full">
+                            <% } else { %>
+                                <span class="text-gray-400">No Image</span>
+                            <% } %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= exchange.exchangeID %></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= exchange.exchangeName %></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= exchange.exchangeType %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">No exchanges available</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>    
+</div>
+<div class="p-4 sm:ml-64 mt-8">
+    <h2 class="text-xl font-bold mb-4">Add New Exchange</h2>
+    <form action="/admin/add-new-exchange" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="logo">
+                Logo URL
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="logo" name="logo" type="text" placeholder="Enter logo URL">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id">
+                Exchange ID
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="id" name="id" type="text" placeholder="Enter exchange ID">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                Exchange Name
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text" placeholder="Enter exchange name">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="type">
+                Exchange Type
+            </label>
+            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="type" name="type">
+                <option value="cex">CEX</option>
+                <option value="dex">DEX</option>
+            </select>
+        </div>
+        <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                Add
+            </button>
+        </div>
+    </form>
+</div>
