@@ -89,30 +89,61 @@
     </div>
 
     <script>
-        const socketServerUrl = '<%= process.env.SITE_URL %>';
-        const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
-        const socket = io(socketServerUrl, {transports: ['websocket']});
-        socket.on('connect', () => {
-          console.log('Socket.IO connection opened');
-          socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
-        });
-      
-        socket.on('tokenPrices', (prices) => {
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const socketServerUrl = '<%= process.env.SITE_URL %>';
+            const tokens = <%- JSON.stringify(tokens) %>; // Lấy danh sách token từ server
+
+            // Gửi yêu cầu AJAX để lấy giá token hiện tại
+            const response = await fetch('/api/get-token-prices-first-time', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tokens })
+            });
+
+            const prices = await response.json();
+
             // Cập nhật giá token vào các ô tương ứng
-            console.log(prices);
             for (const [token, price] of Object.entries(prices)) {
-            const priceCell = document.querySelector(`td[data-token="${token.split('/')[0]}"]`);
-            if (priceCell) {
-                priceCell.innerText = `$${price}`;
+                const tokenName = token.split('/')[0];
+                const priceCell = document.querySelector(`td[data-token="${tokenName}"]`);
+                if (priceCell) {
+                    priceCell.innerText = `$${price}`;
+                } else {
+                    console.error(`No element found for token: ${tokenName}`);
+                }
             }
-            }
+
+            // Kết nối WebSocket để cập nhật giá theo thời gian thực
+            const socket = io(socketServerUrl, {transports: ['websocket']});
+
+            socket.on('connect', () => {
+                console.log('Socket.IO connection opened');
+                socket.emit('subscribeToTokens', tokens); // Gửi danh sách token đến server
+            });
+
+            socket.on('tokenPrices', (prices) => {
+                console.log('Token prices:', prices);
+                // Hiển thị giá token lên giao diện
+                for (const [token, price] of Object.entries(prices)) {
+                    const tokenName = token.split('/')[0];
+                    const priceCell = document.querySelector(`td[data-token="${tokenName}"]`);
+                    if (priceCell) {
+                        priceCell.innerText = `$${price}`;
+                    } else {
+                        console.error(`No element found for token: ${tokenName}`);
+                    }
+                }
+            });
+
+            socket.on('disconnect', () => {
+                console.log('Socket.IO connection closed');
+            });
+
+            socket.on('connect_error', (error) => {
+                console.error('Socket.IO error:', error);
+            });
         });
-      
-        socket.on('disconnect', () => {
-          console.log('Socket.IO connection closed');
-        });
-      
-        socket.on('connect_error', (error) => {
-          console.error('Socket.IO error:', error);
-        });
-      </script>
+    </script>
