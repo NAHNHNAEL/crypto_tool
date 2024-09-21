@@ -16,6 +16,7 @@ export const initializeWebSocket = (server) => {
           exchange: token.exchange
         }));
         console.log('Subscribed to tokens:', tokens);
+        await fetchTokenPrices();
       });
 
       const fetchTokenPrices = async () => {
@@ -42,7 +43,7 @@ export const initializeWebSocket = (server) => {
       };
 
       // Gọi hàm fetchTokenPrices mỗi 5 giây
-      const interval = setInterval(fetchTokenPrices, 3000);
+      const interval = setInterval(fetchTokenPrices, 60000);
 
       socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id);
