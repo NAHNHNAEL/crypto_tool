@@ -507,6 +507,73 @@ class AdminController extends BaseController {
             
         }
     }
+
+    /**
+     * Get change password page
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * 
+     * */
+    getChangePasswordPage = async (req, res, next) => {
+        this.setTitle('Change Password');
+        this.setErrorMessage('');
+        this.setSuccessMessage('');
+        // Render change password page
+        this.renderView(res, 'admin/change_password');
+    }
+
+    /**
+     * Update password
+     * @param {object} req - Express request object
+     * @param {object} res - Express response object
+     * @param {function} next - Express next middleware function
+     * @returns {void}
+     * 
+     * */
+    updatePassword = async (req, res, next) => {
+        // Setting title
+        this.setTitle('Change Password');
+        // Get password data from form
+        const { currentPassword, newPassword } = req.body;
+        console.log(req.body);
+        // Find user by id
+        const user = await User.findById(req.session.admin._id);
+        // Check if user exists
+        if (!user) {
+            // Redirect to change password page with error message
+            const errorMessage = 'User not found';
+            this.setErrorMessage(errorMessage);
+            this.renderView(res, 'admin/change_password');
+            return;
+        }
+        // Check if current password is correct
+        const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+        if (!isPasswordCorrect) {
+            // Redirect to change password page with error message
+            const errorMessage = 'Invalid current password';
+            this.setErrorMessage(errorMessage);
+            this.renderView(res, 'admin/change_password');
+            return;
+        }
+        // Encrypt new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        // Update password
+        try {
+            await User.findByIdAndUpdate(user._id, { password: hashedPassword });
+            // Redirect to change password page with success message
+            const successMessage = 'Password updated successfully';
+            this.setSuccessMessage(successMessage);
+            this.renderView(res, 'admin/change_password');
+        }
+        catch (error) {
+            // Redirect to change password page with error message
+            const errorMessage = 'Error updating password';
+            this.setErrorMessage(errorMessage);
+            this.renderView(res, 'admin/change_password');
+        }
+    }      
 }
 
 export default new AdminController();
