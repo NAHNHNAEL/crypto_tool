@@ -40,6 +40,10 @@ adminRouter.get('/token-price',isAuthenticatedAdmin, AdminController.getTokenPri
 adminRouter.get('/exchange-list',isAuthenticatedAdmin, AdminController.getExchangeListPage);
 // Add new exchange
 adminRouter.post('/add-new-exchange',isAuthenticatedAdmin, AdminController.addNewExchange);
+// Get change password page
+adminRouter.get('/change-password',isAuthenticatedAdmin, AdminController.getChangePasswordPage);
+// Update password
+adminRouter.post('/change-password',isAuthenticatedAdmin, AdminController.updatePassword);
 
 
 
